@@ -1,24 +1,27 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, View, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, KeyboardAvoidingView, Image } from 'react-native';
 import io from 'socket.io-client'
-import { GiftedChat } from 'react-native-gifted-chat'
+import { GiftedChat, Send } from 'react-native-gifted-chat'
+import Spinner from 'react-native-loading-spinner-overlay';
+
+
 
 export default function Home({ route }) {
     const [receiveMessage, setReceiveMessage] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const socket = useRef(null);
     //http://192.168.16.104:4001/
 
     //https://demo-chat-real.herokuapp.com/
 
     useEffect(() => {
-        console.log('effect')
-        console.log(route.params.name);
-        console.log(route.params.room);
+      
         const loadData = async () => {
             await fetch(`https://demo-chat-real.herokuapp.com/${route.params.room}`)
                 .then(res => res.json())
                 .then(res => {
                     setReceiveMessage(pre => GiftedChat.append(pre, res))
+                    setIsLoading(false)
 
                 })
             socket.current = io("https://demo-chat-real.herokuapp.com/");
@@ -37,9 +40,18 @@ export default function Home({ route }) {
         socket.current.emit("message", messageToSend[0].text);
         setReceiveMessage(pre => GiftedChat.append(pre, messageToSend))
     }
-
+   
     return (
         <View style={styles.container}>
+            <Spinner
+                //visibility of Overlay Loading Spinner
+                visible={isLoading}
+                //Text with the Spinner
+                textContent={'Loading...'}
+                //Text style of the Spinner Text
+                textStyle={{ color: '#FFF' }}
+            />
+
             <GiftedChat
                 isTyping={true}
                 renderUsernameOnMessage
@@ -51,6 +63,22 @@ export default function Home({ route }) {
                     _id: 1,
                 }}
                 scrollToBottom={true}
+                renderSend={(props) => {
+                    return (
+                        <Send
+                            {...props}
+                            containerStyle={{
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                alignSelf: 'center',
+                                marginRight: 15,
+                            }}
+                        >
+                            <Image source={require('../assets/send.png')}
+                                style={{ width: 27.2, height: 27.2 }} />
+                        </Send>
+                    );
+                }}
             />
         </View>
     );

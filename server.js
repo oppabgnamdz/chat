@@ -14,9 +14,9 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 const userSchema = new mongoose.Schema({
-    _id: { type: Number },
     text: { type: String },
     createdAt: { type: String },
+    time: { type: Number },
     room: { type: String },
     user: {
         _id: { type: Number },
@@ -28,13 +28,14 @@ const userSchema = new mongoose.Schema({
 })
 const User = mongoose.model('User', userSchema)
 let currentUserId = 2;
-let currentMessageId = 1;
+let plusMess = 1;
+
 const users = {}
 async function createUser(userParam) {
     const user = new User({
-        _id: userParam._id,
         text: userParam.text,
         createdAt: userParam.createdAt + "",
+        time: parseInt(userParam.time),
         room: userParam.room,
         user: {
             _id: userParam.user._id,
@@ -51,9 +52,10 @@ async function createUser(userParam) {
 }
 let createMessage = (userParam, messageText) => {
     const user = {
-        _id: currentMessageId++,
+        _id: plusMess++,
         text: messageText,
         createdAt: new Date(),
+        time: new Date().getTime(),
         room: userParam.room,
         user: {
             _id: userParam.userId,
@@ -90,7 +92,7 @@ io.on('connection', socket => {
 });
 
 app.use('/:params', (req, res) => {
-   
+
     if (req.params.params !== 'favicon.io') {
         async function getUsers() {
             const users = await User.find({ room: req.params.params }).sort({ _id: -1 });

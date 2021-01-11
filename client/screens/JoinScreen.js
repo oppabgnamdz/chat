@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { View, Text, TextInput, TouchableOpacity, Image, ImageBackground } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Image, ImageBackground, Alert } from 'react-native'
+
 
 export default function JoinScreen({ navigation }) {
     const [name, setName] = useState('');
@@ -19,6 +20,7 @@ export default function JoinScreen({ navigation }) {
                     source={require('../assets/chat.png')}
                     style={{ width: 200, height: 200 }}
                 />
+                
                 <Text
                     style={{ fontSize: 30 }}
                 >Join Chat !</Text>
@@ -43,8 +45,7 @@ export default function JoinScreen({ navigation }) {
                 <TouchableOpacity
                     style={{ backgroundColor: 'cyan', textAlign: 'center', borderRadius: 10, marginTop: 20, padding: 15, width: '60%', alignItems: 'center' }}
                     onPress={() => {
-
-                        navigation.navigate('Home', { name, room })
+                        (name && room) ? navigation.navigate('Home', { name, room }) : Alert.alert('Field is not empty')
                     }}
                 >
                     <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Join!</Text>
