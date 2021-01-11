@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Image, ImageBackground } from 
 
 export default function JoinScreen({ navigation }) {
     const [name, setName] = useState('');
+    const [room, setRoom] = useState('');
     return (
         <View style={{ backgroundColor: '#f000', flex: 1 }}>
             <ImageBackground
@@ -22,7 +23,7 @@ export default function JoinScreen({ navigation }) {
                     style={{ fontSize: 30 }}
                 >Join Chat !</Text>
                 <TextInput
-                    style={{ borderWidth: 1, padding: 10, borderColor: 'gray', borderRadius: 10, marginTop: 10, color: 'black', fontSize: 20 ,backgroundColor: 'white'}}
+                    style={{ borderWidth: 1, padding: 10, borderColor: 'gray', borderRadius: 10, marginTop: 10, color: 'black', fontSize: 20, backgroundColor: 'white', width: '40%', textAlign: 'center' }}
                     placeholder="Enter Your Name"
                     value={name}
                     onChangeText={(e) => {
@@ -30,11 +31,20 @@ export default function JoinScreen({ navigation }) {
                     }}
 
                 />
+                <TextInput
+                    style={{ borderWidth: 1, padding: 10, borderColor: 'gray', borderRadius: 10, marginTop: 10, color: 'black', fontSize: 20, backgroundColor: 'white', width: '40%', textAlign: 'center' }}
+                    placeholder="Enter Room"
+                    value={room}
+                    onChangeText={(e) => {
+                        setRoom(e)
+                    }}
+
+                />
                 <TouchableOpacity
                     style={{ backgroundColor: 'cyan', textAlign: 'center', borderRadius: 10, marginTop: 20, padding: 15, width: '60%', alignItems: 'center' }}
                     onPress={() => {
 
-                        navigation.navigate('Home', { name })
+                        navigation.navigate('Home', { name, room })
                     }}
                 >
                     <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Join!</Text>
