@@ -50,7 +50,7 @@ let createMessage = (userParam, messageText) => {
         user: {
             _id: userParam.userId,
             name: userParam.userName,
-            avatar: `https://robohash.org/${currentMessageId}`,
+            avatar: `https://robohash.org/${userParam.userId}`,
         },
     }
     createUser(user);
@@ -60,9 +60,13 @@ io.on('connection', socket => {
     console.log('have connect')
     console.log(socket.id)
     users[socket.id] = { userId: currentUserId++ };
+
     socket.on("join", (userName) => {
         console.log(userName)
         users[socket.id].userName = userName
+        //test 
+        // socket.join('room 237');
+     
     })
     socket.on("message", messageText => {
         const user = users[socket.id];
