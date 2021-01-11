@@ -15,13 +15,13 @@ export default function Home({ route }) {
         console.log(route.params.name);
         console.log(route.params.room);
         const loadData = async () => {
-            await fetch(`http://192.168.16.104:4001/${route.params.room}`)
+            await fetch(`https://demo-chat-real.herokuapp.com/${route.params.room}`)
                 .then(res => res.json())
                 .then(res => {
                     setReceiveMessage(pre => GiftedChat.append(pre, res))
 
                 })
-            socket.current = io("http://192.168.16.104:4001/");
+            socket.current = io("https://demo-chat-real.herokuapp.com/");
             socket.current.emit("join", { name: route.params.name, room: route.params.room })
 
             socket.current.on("message", message => {
