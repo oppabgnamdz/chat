@@ -32,7 +32,7 @@ export default function SignIn({ navigation }) {
         if (account && password) {
             //https://demo-chat-real.herokuapp.com/
             //http://192.168.16.104:4001/
-            postData('http://192.168.16.104:4001/signin', { account, password })
+            postData('https://demo-chat-real.herokuapp.com/signin', { account, password })
                 .then(data => {
                     setIsLoading(false)
                     if (data.status === 'fail') {

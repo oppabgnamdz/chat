@@ -18,14 +18,14 @@ export default function Home({ route }) {
     useEffect(() => {
 
         const loadData = async () => {
-            await fetch(`http://192.168.16.104:4001/${room}`)
+            await fetch(`https://demo-chat-real.herokuapp.com/${room}`)
                 .then(res => res.json())
                 .then(res => {
                     setReceiveMessage(pre => GiftedChat.append(pre, res))
                     setIsLoading(false)
 
                 })
-            socket.current = io("http://192.168.16.104:4001/");
+            socket.current = io("https://demo-chat-real.herokuapp.com/");
             socket.current.emit("join", { name, room, account, avatar, time })
 
             socket.current.on("message", message => {

@@ -35,7 +35,7 @@ export default function SignUp() {
             if (account && password && name) {
                 //https://demo-chat-real.herokuapp.com/
                 //http://192.168.16.104:4001/
-                postData('http://192.168.16.104:4001/signup', { account, name, password })
+                postData('https://demo-chat-real.herokuapp.com/signup', { account, name, password })
                     .then(data => {
                         setIsLoading(false)
                         if (data.status === 'fail') {
