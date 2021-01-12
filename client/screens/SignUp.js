@@ -31,7 +31,9 @@ export default function SignUp() {
         }
         if (password === confirmPassword) {
             if (account && password && name) {
-                postData('http://192.168.16.104:4001/signup', { account, name, password })
+                //https://demo-chat-real.herokuapp.com/
+                //http://192.168.16.104:4001/
+                postData('https://demo-chat-real.herokuapp.com/signup', { account, name, password })
                     .then(data => {
                         if (data.status === 'fail') {
                             Alert.alert('Account is used . Please create another !')

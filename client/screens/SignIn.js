@@ -28,12 +28,13 @@ export default function SignIn({ navigation }) {
             return;
         }
         if (account && password) {
-            postData('http://192.168.16.104:4001/signin', { account, password })
+            //https://demo-chat-real.herokuapp.com/
+            //http://192.168.16.104:4001/
+            postData('https://demo-chat-real.herokuapp.com/signin', { account, password })
                 .then(data => {
                     if (data.status === 'fail') {
                         Alert.alert('This account is Invalid')
                     } else {
-                        console.log(data[0]);
                         navigation.navigate('JoinScreen', data[0])
                     }
                 });

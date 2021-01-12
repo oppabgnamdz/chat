@@ -4,7 +4,6 @@ import { View, Text, TextInput, TouchableOpacity, Image, ImageBackground, Alert 
 
 export default function JoinScreen({ navigation, route }) {
     const { account, name, avatar, time } = route.params
-    console.log(account);
     const [room, setRoom] = useState('');
     return (
         <View style={{ backgroundColor: '#f000', flex: 1 }}>
