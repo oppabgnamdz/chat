@@ -15,16 +15,16 @@ export default function Home({ route }) {
     //https://demo-chat-real.herokuapp.com/
 
     useEffect(() => {
-      
+
         const loadData = async () => {
-            await fetch(`https://demo-chat-real.herokuapp.com/${route.params.room}`)
+            await fetch(`http://192.168.16.104:4001/${route.params.room}`)
                 .then(res => res.json())
                 .then(res => {
                     setReceiveMessage(pre => GiftedChat.append(pre, res))
                     setIsLoading(false)
 
                 })
-            socket.current = io("https://demo-chat-real.herokuapp.com/");
+            socket.current = io("http://192.168.16.104:4001/");
             socket.current.emit("join", { name: route.params.name, room: route.params.room })
 
             socket.current.on("message", message => {
@@ -40,7 +40,7 @@ export default function Home({ route }) {
         socket.current.emit("message", messageToSend[0].text);
         setReceiveMessage(pre => GiftedChat.append(pre, messageToSend))
     }
-   
+
     return (
         <View style={styles.container}>
             <Spinner
