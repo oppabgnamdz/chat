@@ -7,6 +7,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 
 export default function Home({ route }) {
+    const { name, room, account, avatar, time } = route.params;
     const [receiveMessage, setReceiveMessage] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const socket = useRef(null);
@@ -17,7 +18,7 @@ export default function Home({ route }) {
     useEffect(() => {
 
         const loadData = async () => {
-            await fetch(`http://192.168.16.104:4001/${route.params.room}`)
+            await fetch(`http://192.168.16.104:4001/${room}`)
                 .then(res => res.json())
                 .then(res => {
                     setReceiveMessage(pre => GiftedChat.append(pre, res))
@@ -25,7 +26,7 @@ export default function Home({ route }) {
 
                 })
             socket.current = io("http://192.168.16.104:4001/");
-            socket.current.emit("join", { name: route.params.name, room: route.params.room })
+            socket.current.emit("join", { name, room, account, avatar, time })
 
             socket.current.on("message", message => {
                 setReceiveMessage(pre => GiftedChat.append(pre, message))

@@ -4,6 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import Home from './screens/Home';
 import JoinScreen from './screens/JoinScreen';
+import SignUp from './screens/SignUp';
+import SignIn from './screens/SignIn';
 // Ignore log notification by message
 LogBox.ignoreLogs(['Warning: ...']);
 
@@ -13,6 +15,25 @@ const Stack = createStackNavigator();
 const MyStack = () => {
   return (
     <Stack.Navigator>
+      <Stack.Screen name="SignIn" component={SignIn} options={{
+        title: '', headerStyle: {
+          backgroundColor: '#f4511e',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }} />
+      <Stack.Screen name="SignUp" component={SignUp} options={{
+        title: '', headerStyle: {
+          backgroundColor: '#f4511e',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }} />
+
       <Stack.Screen name="JoinScreen" component={JoinScreen} options={{
         title: 'Welcome', headerStyle: {
           backgroundColor: '#ff3b3a',
@@ -34,6 +55,7 @@ const MyStack = () => {
           fontWeight: 'bold',
         },
       }} />
+
 
     </Stack.Navigator>
   )

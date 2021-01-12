@@ -10,9 +10,9 @@ var bodyParser = require('body-parser')
 const createMessageToDb = require('./controller/CreateMessage');
 const getMessage = require('./controller/GetMessage')
 const createUser = require('./controller/CreateUser')
+const getUser = require('./controller/GetUser')
 // declare variable
 let PORT = process.env.PORT || 4001
-let currentUserId = 2;
 let plusMess = 1;
 const users = {}
 
@@ -36,7 +36,7 @@ let createMessage = (userParam, messageText) => {
         user: {
             _id: userParam.userId,
             name: userParam.userName,
-            avatar: `https://robohash.org/${userParam.userId}`,
+            avatar: userParam.avatar,
         },
     }
     createMessageToDb(message);
@@ -44,10 +44,14 @@ let createMessage = (userParam, messageText) => {
 }
 // io listener
 io.on('connection', socket => {
-    users[socket.id] = { userId: currentUserId++ };
-    socket.on("join", ({ name, room }) => {
+
+    socket.on("join", ({ name, room, account, avatar, time }) => {
+        console.log({ name, room, account, avatar, time });
+        users[socket.id] = { userId: time };
         users[socket.id].userName = name
         users[socket.id].room = room
+        users[socket.id].avatar = avatar
+
         socket.join(room);
     })
     socket.on("message", messageText => {
@@ -68,12 +72,21 @@ app.get('/:params', (req, res) => {
     }
 })
 // route login
-app.post('/login', (req, res) => {
-    const { account, name, password, avatar } = req.body
-    createUser({ account, name, password, avatar })
+app.post('/signup', (req, res) => {
+    const { account, name, password } = req.body
+    createUser({ account, name, password })
         .then(result => {
             result ? res.send(result) : res.send({ status: 'fail' })
         })
+
+})
+app.post('/signin', (req, res) => {
+    const { account, password } = req.body
+    getUser({ account, password })
+        .then(result => {
+            result.length ? res.send(result) : res.send({ status: 'fail' })
+        })
+
 
 })
 

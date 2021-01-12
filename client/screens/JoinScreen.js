@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { View, Text, TextInput, TouchableOpacity, Image, ImageBackground, Alert } from 'react-native'
 
 
-export default function JoinScreen({ navigation }) {
-    const [name, setName] = useState('');
+export default function JoinScreen({ navigation, route }) {
+    const { account, name, avatar, time } = route.params
+    console.log(account);
     const [room, setRoom] = useState('');
     return (
         <View style={{ backgroundColor: '#f000', flex: 1 }}>
@@ -20,19 +21,11 @@ export default function JoinScreen({ navigation }) {
                     source={require('../assets/chat.png')}
                     style={{ width: 200, height: 200 }}
                 />
-                
+
                 <Text
                     style={{ fontSize: 30 }}
                 >Join Chat !</Text>
-                <TextInput
-                    style={{ borderWidth: 1, padding: 10, borderColor: 'gray', borderRadius: 10, marginTop: 10, color: 'black', fontSize: 20, backgroundColor: 'white', width: '40%', textAlign: 'center' }}
-                    placeholder="Enter Your Name"
-                    value={name}
-                    onChangeText={(e) => {
-                        setName(e)
-                    }}
 
-                />
                 <TextInput
                     style={{ borderWidth: 1, padding: 10, borderColor: 'gray', borderRadius: 10, marginTop: 10, color: 'black', fontSize: 20, backgroundColor: 'white', width: '40%', textAlign: 'center' }}
                     placeholder="Enter Room"
@@ -45,7 +38,7 @@ export default function JoinScreen({ navigation }) {
                 <TouchableOpacity
                     style={{ backgroundColor: 'cyan', textAlign: 'center', borderRadius: 10, marginTop: 20, padding: 15, width: '60%', alignItems: 'center' }}
                     onPress={() => {
-                        (name && room) ? navigation.navigate('Home', { name, room }) : Alert.alert('Field is not empty')
+                        room ? navigation.navigate('Home', { name, room, account, avatar, time }) : Alert.alert('Field is not empty')
                     }}
                 >
                     <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Join!</Text>
