@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native'
-
+import Spinner from 'react-native-loading-spinner-overlay';
 export default function SignUp() {
     const [account, setAccount] = useState('');
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     async function postData(url = '', data = {}) {
 
         const response = await fetch(url, {
@@ -25,6 +26,7 @@ export default function SignUp() {
     }
 
     const signUp = () => {
+        setIsLoading(true)
         if (hasWhiteSpace(account)) {
             Alert.alert('Account is must not white space')
             return;
@@ -33,8 +35,9 @@ export default function SignUp() {
             if (account && password && name) {
                 //https://demo-chat-real.herokuapp.com/
                 //http://192.168.16.104:4001/
-                postData('https://demo-chat-real.herokuapp.com/signup', { account, name, password })
+                postData('http://192.168.16.104:4001/signup', { account, name, password })
                     .then(data => {
+                        setIsLoading(false)
                         if (data.status === 'fail') {
                             Alert.alert('Account is used . Please create another !')
                         } else {
@@ -54,6 +57,14 @@ export default function SignUp() {
 
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Spinner
+                //visibility of Overlay Loading Spinner
+                visible={isLoading}
+                //Text with the Spinner
+                textContent={'Loading...'}
+                //Text style of the Spinner Text
+                textStyle={{ color: '#FFF' }}
+            />
             <TextInput
                 style={{ borderWidth: 1, padding: 10, borderColor: 'gray', borderRadius: 10, marginTop: 10, color: 'black', fontSize: 20, backgroundColor: 'white', width: '40%', textAlign: 'center' }}
                 placeholder="Enter Your Account"
