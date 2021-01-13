@@ -38,7 +38,7 @@ export default function Person({ route, navigation }) {
             console.log('new pass');
             if (editName) {
                 setIsLoading(true)
-                updateData(`${local}update`, { account, name: editName, password: newPassword })
+                updateData(`${sv}update`, { account, name: editName, password: newPassword })
                     .then(data => {
                         setIsLoading(false)
                         if (data.status === 'fail') {
@@ -55,7 +55,7 @@ export default function Person({ route, navigation }) {
             console.log('no new pass');
             if (editName) {
                 setIsLoading(true)
-                updateData(`${local}update`, { account, name: editName })
+                updateData(`${sv}update`, { account, name: editName })
                     .then(data => {
                         console.log('hey hey ne');
                         setIsLoading(false)

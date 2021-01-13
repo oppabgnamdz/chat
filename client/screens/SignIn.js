@@ -33,7 +33,7 @@ export default function SignIn({ navigation }) {
             setIsLoading(true)
             const sv = `https://demo-chat-real.herokuapp.com/`
             const local = `http://192.168.16.104:4001/`
-            postData(`${local}signin`, { account, password })
+            postData(`${sv}signin`, { account, password })
                 .then(data => {
                     setIsLoading(false)
                     if (data.status === 'fail') {

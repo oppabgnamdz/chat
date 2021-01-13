@@ -36,7 +36,7 @@ export default function SignUp({ navigation }) {
                 setIsLoading(true)
                 const sv = `https://demo-chat-real.herokuapp.com/`
                 const local = `http://192.168.16.104:4001/`
-                postData(`${local}signup`, { account, name, password })
+                postData(`${sv}signup`, { account, name, password })
                     .then(data => {
                         setIsLoading(false)
                         if (data.status === 'fail') {
