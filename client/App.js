@@ -1,11 +1,13 @@
 import React from 'react';
-import { LogBox } from 'react-native';
+import { LogBox, TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import Home from './screens/Home';
 import JoinScreen from './screens/JoinScreen';
 import SignUp from './screens/SignUp';
 import SignIn from './screens/SignIn';
+import Person from './screens/Person';
+import { Ionicons } from '@expo/vector-icons';
 // Ignore log notification by message
 LogBox.ignoreLogs(['Warning: ...']);
 
@@ -16,44 +18,70 @@ const MyStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="SignIn" component={SignIn} options={{
-        title: '', headerStyle: {
+        title: 'Welcome', headerStyle: {
           backgroundColor: '#f4511e',
         },
         headerTintColor: '#fff',
+        headerTitleAlign: 'center',
         headerTitleStyle: {
           fontWeight: 'bold',
         },
       }} />
       <Stack.Screen name="SignUp" component={SignUp} options={{
-        title: '', headerStyle: {
+        title: 'Sign Up', headerStyle: {
           backgroundColor: '#f4511e',
         },
         headerTintColor: '#fff',
+        headerTitleAlign: 'center',
         headerTitleStyle: {
           fontWeight: 'bold',
         },
       }} />
 
-      <Stack.Screen name="JoinScreen" component={JoinScreen} options={{
-        title: 'Welcome', headerStyle: {
-          backgroundColor: '#ff3b3a',
+      <Stack.Screen name="JoinScreen" component={JoinScreen} options={({ navigation, route }) => (
+        {
+          title: 'Welcome', headerStyle: {
+            backgroundColor: '#ff3b3a',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center',
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Person", route.params)
+              }}
+            >
+              <Ionicons style={{ marginRight: 15, marginTop: 7 }} name="person-circle-outline" size={28} color="white" />
+            </TouchableOpacity>
+          )
+
+        }
+      )} />
+
+      <Stack.Screen name="Home" component={Home} options={(navigation, route) => (
+        {
+          title: "", headerStyle: {
+            backgroundColor: '#f4511e',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center',
+        }
+      )} />
+      <Stack.Screen name="Person" component={Person} options={{
+        title: 'Information', headerStyle: {
+          backgroundColor: '#f4511e',
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
           fontWeight: 'bold',
         },
         headerTitleAlign: 'center',
-
-      }} />
-
-      <Stack.Screen name="Home" component={Home} options={{
-        title: '', headerStyle: {
-          backgroundColor: '#f4511e',
-        },
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
       }} />
 
 

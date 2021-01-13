@@ -24,15 +24,16 @@ export default function SignIn({ navigation }) {
         return response.json();
     }
     const signIn = () => {
-        setIsLoading(true)
+
         if (hasWhiteSpace(account)) {
             Alert.alert('Account is must not white space')
             return;
         }
         if (account && password) {
-            //https://demo-chat-real.herokuapp.com/
-            //http://192.168.16.104:4001/
-            postData('https://demo-chat-real.herokuapp.com/signin', { account, password })
+            setIsLoading(true)
+            const sv = `https://demo-chat-real.herokuapp.com/`
+            const local = `http://192.168.16.104:4001/`
+            postData(`${local}signin`, { account, password })
                 .then(data => {
                     setIsLoading(false)
                     if (data.status === 'fail') {

@@ -11,13 +11,14 @@ const createMessageToDb = require('./controller/CreateMessage');
 const getMessage = require('./controller/GetMessage')
 const createUser = require('./controller/CreateUser')
 const getUser = require('./controller/GetUser')
+const updateUser = require('./controller/UpdateUser')
 // declare variable
 let PORT = process.env.PORT || 4001
 let plusMess = 1;
 const users = {}
 
 //connect to DB
-mongoose.connect(`mongodb+srv://obnd217:@@123qwe@cluster0.9m2or.mongodb.net/login?retryWrites=true&w=majority`, { useNewUrlParser: true }).then(() => console.log('connected')).catch(err => console.log(err))
+mongoose.connect(`mongodb+srv://obnd217:@@123qwe@cluster0.9m2or.mongodb.net/man?retryWrites=true&w=majority`, { useNewUrlParser: true }).then(() => console.log('connected')).catch(err => console.log(err))
 
 //middware
 app.use(cors())
@@ -86,7 +87,22 @@ app.post('/signin', (req, res) => {
         .then(result => {
             result.length ? res.send(result) : res.send({ status: 'fail' })
         })
-
+})
+app.put('/update', (req, res) => {
+    console.log('put here');
+    const { account, name, password } = req.body
+    console.log({ account, name, password });
+    if (password) {
+        updateUser(account, { name, password })
+            .then(result => {
+                result ? res.send(result) : res.send({ status: 'fail' })
+            })
+    }else{
+        updateUser(account, { name })
+        .then(result => {
+            result ? res.send(result) : res.send({ status: 'fail' })
+        })
+    }
 
 })
 

@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, TextInput, TouchableOpacity, Image, ImageBackground, Alert } from 'react-native'
 
 
 export default function JoinScreen({ navigation, route }) {
-    const { account, name, avatar, time } = route.params
+    const { account, name, avatar, time, password } = route.params
     const [room, setRoom] = useState('');
+    useEffect(() => {
+        navigation.setOptions({ title: "Hello " + name })
+    }, [])
     return (
         <View style={{ backgroundColor: '#f000', flex: 1 }}>
             <ImageBackground
