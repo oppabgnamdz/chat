@@ -18,7 +18,7 @@ let plusMess = 1;
 const users = {}
 
 //connect to DB
-mongoose.connect(`mongodb+srv://obnd217:@@123qwe@cluster0.9m2or.mongodb.net/demofull?retryWrites=true&w=majority`, { useNewUrlParser: true }).then(() => console.log('connected')).catch(err => console.log(err))
+mongoose.connect(`mongodb+srv://obnd217:@@123qwe@cluster0.9m2or.mongodb.net/testlocal?retryWrites=true&w=majority`, { useNewUrlParser: true }).then(() => console.log('connected')).catch(err => console.log(err))
 
 //middware
 app.use(cors())
@@ -45,22 +45,39 @@ let createMessage = (userParam, messageText) => {
 }
 // io listener
 io.on('connection', socket => {
-
+    console.log('connect to socketio');
     socket.on("join", ({ name, room, account, avatar, time }) => {
-        console.log({ name, room, account, avatar, time });
-        users[socket.id] = { userId: time };
-        users[socket.id].userName = name
-        users[socket.id].room = room
-        users[socket.id].avatar = avatar
+        // console.log({ name, room, account, avatar, time });
 
-        socket.join(room);
+        updateUser(account, { isActive: true })
+            .then(result => {
+                if (result) {
+
+                    users[socket.id] = { userId: time };
+                    users[socket.id].userName = name
+                    users[socket.id].room = room
+                    users[socket.id].avatar = avatar
+                    users[socket.id].account = account;
+
+                    socket.join(room);
+                }
+            })
     })
     socket.on("message", messageText => {
         const user = users[socket.id];
         const message = createMessage(user, messageText)
         socket.to(message.room).emit("message", message)
     })
+    socket.on('disconnecting', (reason) => {
+        updateUser(users[socket.id].account, { isActive: false })
+            .then(result => {
+                if (result) {
+                    console.log('is active false');
+                }
+            })
+    })
 });
+
 // route get  messages from room 
 app.get('/:params', (req, res) => {
     const room = req.params.params
@@ -90,8 +107,8 @@ app.post('/signin', (req, res) => {
 })
 app.put('/update', (req, res) => {
     console.log('put here');
-    const { account, name, password } = req.body
-    console.log({ account, name, password });
+    const { account, name, password, avatar } = req.body
+    console.log({ account, name, password, avatar });
     if (password) {
         updateUser(account, { name, password })
             .then(result => {

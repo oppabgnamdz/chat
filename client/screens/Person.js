@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Alert, Image } from 'react-native'
 import Spinner from 'react-native-loading-spinner-overlay';
 export default function Person({ route, navigation }) {
     const { name, account, avatar, time, password } = route.params;
@@ -8,6 +8,7 @@ export default function Person({ route, navigation }) {
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [newAvatar, setNewAvatar] = useState(avatar)
     async function updateData(url = '', data = {}) {
         const response = await fetch(url, {
             method: 'PUT',
@@ -38,7 +39,7 @@ export default function Person({ route, navigation }) {
             console.log('new pass');
             if (editName) {
                 setIsLoading(true)
-                updateData(`${sv}update`, { account, name: editName, password: newPassword })
+                updateData(`${local}update`, { account, name: editName, password: newPassword, avatar: newAvatar })
                     .then(data => {
                         setIsLoading(false)
                         if (data.status === 'fail') {
@@ -55,7 +56,7 @@ export default function Person({ route, navigation }) {
             console.log('no new pass');
             if (editName) {
                 setIsLoading(true)
-                updateData(`${sv}update`, { account, name: editName })
+                updateData(`${local}update`, { account, name: editName, avatar: newAvatar })
                     .then(data => {
                         console.log('hey hey ne');
                         setIsLoading(false)
@@ -71,6 +72,11 @@ export default function Person({ route, navigation }) {
             }
         }
     }
+    const changeImage = () => {
+        let randomAvatar = Math.floor(Math.random() * 40);
+        setNewAvatar(`https://robohash.org/${randomAvatar}`)
+
+    }
     return (
         <View>
             <Spinner
@@ -82,7 +88,20 @@ export default function Person({ route, navigation }) {
                 textStyle={{ color: '#FFF' }}
             />
             <Text>Your name:  {name}</Text>
-            <Text>Link avatar: {avatar}</Text>
+            <View
+                style={{ alignItems: 'flex-end', flexDirection: 'row', }}
+            >
+                <Image
+                    source={{ uri: newAvatar }}
+                    style={{ width: 60, height: 60 }}
+                />
+                <TouchableOpacity
+                    style={{ backgroundColor: 'lightgreen', textAlign: 'center', borderRadius: 10, marginTop: 20, padding: 15, alignItems: 'center' }}
+                    onPress={changeImage}
+                >
+                    <Text>Change avatar</Text>
+                </TouchableOpacity>
+            </View>
             <TextInput
                 style={{ borderWidth: 1, padding: 10, borderColor: 'gray', borderRadius: 10, marginTop: 10, color: 'black', fontSize: 20, backgroundColor: 'white', width: '40%', textAlign: 'center' }}
                 placeholder="New name"

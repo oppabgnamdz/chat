@@ -33,11 +33,15 @@ export default function SignIn({ navigation }) {
             setIsLoading(true)
             const sv = `https://demo-chat-real.herokuapp.com/`
             const local = `http://192.168.16.104:4001/`
-            postData(`${sv}signin`, { account, password })
+            postData(`${local}signin`, { account, password })
                 .then(data => {
                     setIsLoading(false)
                     if (data.status === 'fail') {
                         Alert.alert('This account is Invalid')
+                        return
+                    }
+                    if (data[0].isActive) {
+                        Alert.alert('This accoutn is active, please sign in another !')
                     } else {
                         navigation.navigate('JoinScreen', data[0])
                     }

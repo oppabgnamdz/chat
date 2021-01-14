@@ -13,10 +13,10 @@ export default function Home({ navigation, route }) {
     const local = `http://192.168.16.104:4001/`
     useEffect(() => {
         navigation.setOptions({ title: "Room: " + room })
-        fetch(`${sv}${room}`)
+        fetch(`${local}${room}`)
             .then(res => res.json())
             .then(res => {
-                socket.current = io(`${sv}`);
+                socket.current = io(`${local}`);
                 socket.current.emit("join", { name, room, account, avatar, time })
 
                 socket.current.on("message", message => {

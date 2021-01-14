@@ -1,6 +1,6 @@
 const User = require('../model/User');
 async function createUser({ account, name, password }) {
-    let avatar = Math.random().toString(36).substring(7);
+    let avatar = Math.floor(Math.random() * 40);
     const checker = await User.find({ account: account });
     const time = new Date().getTime()
     if (!checker.length) {
