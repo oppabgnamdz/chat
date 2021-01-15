@@ -1,18 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, View, KeyboardAvoidingView, Image } from 'react-native';
+import { View, Image } from 'react-native';
 import io from 'socket.io-client'
 import { GiftedChat, Send } from 'react-native-gifted-chat'
 import Spinner from 'react-native-loading-spinner-overlay';
 import SERVER from '../utils/Server';
+import ToggleSwitch from 'toggle-switch-react-native'
 
 export default function Home({ navigation, route }) {
     const { name, room, account, avatar, time } = route.params;
     const [receiveMessage, setReceiveMessage] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [toggle, setToggle] = useState(false);
     const socket = useRef(null);
-
     useEffect(() => {
-        navigation.setOptions({ title: "Room: " + room })
         fetch(`${SERVER}${room}`)
             .then(res => res.json())
             .then(res => {
@@ -26,13 +26,33 @@ export default function Home({ navigation, route }) {
 
             })
     }, [])
+    useEffect(() => {
+        navigation.setOptions({
+            title: "Room: " + room, headerRight: () => (
+                <ToggleSwitch
+                    isOn={toggle}
+                    onColor="white"
+                    offColor="black"
+                    label="Switch mode"
+                    labelStyle={{ color: "black", fontWeight: "900" }}
+                    size="medium"
+                    onToggle={isOn => {
+                        setToggle(toggle => !toggle)
+                    }}
+                />
+            )
+        })
+    }, [toggle])
     const onSend = (messageToSend) => {
         socket.current.emit("message", messageToSend[0].text);
         setReceiveMessage(pre => GiftedChat.append(pre, messageToSend))
     }
 
     return (
-        <View style={styles.container}>
+        <View style={{
+            flex: 1,
+            backgroundColor: toggle ? 'white' : 'black'
+        }}>
             <Spinner
                 //visibility of Overlay Loading Spinner
                 visible={isLoading}
@@ -41,7 +61,6 @@ export default function Home({ navigation, route }) {
                 //Text style of the Spinner Text
                 textStyle={{ color: '#FFF' }}
             />
-
             <GiftedChat
                 isTyping={true}
                 renderUsernameOnMessage
@@ -73,11 +92,3 @@ export default function Home({ navigation, route }) {
         </View>
     );
 }
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        // alignItems: 'center',
-        // justifyContent: 'center',
-    },
-});
