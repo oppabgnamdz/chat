@@ -1,3 +1,3 @@
-const SERVER = "http://192.168.16.104:4001/"
+const SERVER = "https://demo-chat-real.herokuapp.com/"
 //https://demo-chat-real.herokuapp.com/
 export default SERVER

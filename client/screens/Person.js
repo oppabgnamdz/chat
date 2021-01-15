@@ -187,82 +187,40 @@ const styles = StyleSheet.create({
     textForm:
     {
         borderWidth: 1,
-        padding
-            :
-            10,
-        borderColor
-            :
-            'gray',
-        borderRadius
-            :
-            10,
-        marginTop
-            :
-            10,
-        color
-            :
-            'black',
-        fontSize
-            :
-            20,
-        backgroundColor
-            :
-            'white',
-        width
-            :
-            '60%',
-        textAlign
-            :
-            'center'
+        padding: 10,
+        borderColor: 'gray',
+        borderRadius: 10,
+        marginTop: 10,
+        color: 'black',
+        fontSize: 20,
+        backgroundColor: 'white',
+        width: '60%',
+        textAlign: 'center'
     }
     ,
     textName:
     {
         fontSize: 20,
-        marginTop
-            :
-            10,
-        marginBottom
-            :
-            10
+        marginTop: 10,
+        marginBottom: 10
     }
     ,
     image:
     {
         width: 100,
-        height
-            :
-            100,
-        backgroundColor
-            :
-            'pink',
-        borderRadius
-            :
-            50,
-
+        height: 100,
+        backgroundColor: 'pink',
+        borderRadius: 50,
     }
     ,
-
     modal:
     {
         height: 200,
-        width
-            :
-            '80%',
-        backgroundColor
-            :
-            'lightgreen',
-        borderRadius
-            :
-            15,
-        justifyContent
-            :
-            'center',
-        flexDirection
-            :
-            'column',
-        alignItems
-            :
-            'center'
+        width: '80%',
+        backgroundColor: 'lightgreen',
+        borderRadius: 15,
+        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center'
     }
 })
