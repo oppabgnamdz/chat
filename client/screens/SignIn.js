@@ -5,7 +5,7 @@ import { Container, Form, Item, Input, Label } from 'native-base';
 import { AntDesign } from '@expo/vector-icons';
 import image from '../assets/backgroundtest.jpg';
 import SERVER from '../utils/Server';
-import  BlankValidate from '../utils/BlankValidate'
+import BlankValidate from '../utils/BlankValidate'
 export default function SignIn({ navigation }) {
 
     const [account, setAccount] = useState('');
@@ -35,7 +35,7 @@ export default function SignIn({ navigation }) {
         }
         if (account && password) {
             setIsLoading(true)
-          
+
             postData(`${SERVER}signin`, { account, password })
                 .then(data => {
                     setIsLoading(false)
@@ -43,9 +43,7 @@ export default function SignIn({ navigation }) {
                         Alert.alert('This account is Invalid')
                         return
                     }
-                    if (data[0].isActive) {
-                        Alert.alert('This account is active, please sign in another !')
-                    } else {
+                    else {
                         navigation.navigate('JoinScreen', data[0])
                     }
                 });

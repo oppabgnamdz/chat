@@ -47,35 +47,18 @@ let createMessage = (userParam, messageText) => {
 io.on('connection', socket => {
     console.log('connect to socketio');
     socket.on("join", ({ name, room, account, avatar, time }) => {
-        // console.log({ name, room, account, avatar, time });
-
-        updateUser(account, { isActive: true })
-            .then(result => {
-                if (result) {
-
-                    users[socket.id] = { userId: time };
-                    users[socket.id].userName = name
-                    users[socket.id].room = room
-                    users[socket.id].avatar = avatar
-                    users[socket.id].account = account;
-
-                    socket.join(room);
-                }
-            })
+        users[socket.id] = { userId: time };
+        users[socket.id].userName = name
+        users[socket.id].room = room
+        users[socket.id].avatar = avatar
+        socket.join(room);
     })
     socket.on("message", messageText => {
         const user = users[socket.id];
         const message = createMessage(user, messageText)
         socket.to(message.room).emit("message", message)
     })
-    socket.on('disconnecting', (reason) => {
-        updateUser(users[socket.id].account, { isActive: false })
-            .then(result => {
-                if (result) {
-                    console.log('is active false');
-                }
-            })
-    })
+
 });
 
 // route get  messages from room 

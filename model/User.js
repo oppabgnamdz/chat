@@ -5,8 +5,6 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     avatar: { type: String, required: true },
     time: { type: Number, required: true },
-    isActive: { type: Boolean, default: false }
-
 })
 const User = mongoose.model('User', userSchema)
 module.exports = User
