@@ -5,6 +5,7 @@ import { Container, Form, Item, Input, Label } from 'native-base';
 import { AntDesign } from '@expo/vector-icons';
 import image from '../assets/backgroundtest.jpg';
 import SERVER from '../utils/Server';
+import  BlankValidate from '../utils/BlankValidate'
 export default function SignIn({ navigation }) {
 
     const [account, setAccount] = useState('');
@@ -28,7 +29,7 @@ export default function SignIn({ navigation }) {
     }
     const signIn = () => {
 
-        if (hasWhiteSpace(account)) {
+        if (BlankValidate(account) || BlankValidate(password)) {
             Alert.alert('Account is must not white space')
             return;
         }
@@ -43,7 +44,7 @@ export default function SignIn({ navigation }) {
                         return
                     }
                     if (data[0].isActive) {
-                        Alert.alert('This accoutn is active, please sign in another !')
+                        Alert.alert('This account is active, please sign in another !')
                     } else {
                         navigation.navigate('JoinScreen', data[0])
                     }
@@ -52,10 +53,6 @@ export default function SignIn({ navigation }) {
             Alert.alert('Field is not empty')
         }
     }
-    function hasWhiteSpace(s) {
-        return /\s/g.test(s);
-    }
-
     return (
         <Container>
             <ImageBackground
@@ -103,7 +100,6 @@ const styles = StyleSheet.create({
         resizeMode: "cover",
     },
     form: {
-        marginTop: 40,
         marginLeft: 20,
         marginRight: 30,
         marginTop: 70
