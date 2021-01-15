@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native'
 import Spinner from 'react-native-loading-spinner-overlay';
+import SERVER from '../utils/Server';
+
 export default function SignUp({ navigation }) {
     const [account, setAccount] = useState('');
     const [name, setName] = useState('');
@@ -34,9 +36,8 @@ export default function SignUp({ navigation }) {
         if (password === confirmPassword) {
             if (account && password && name) {
                 setIsLoading(true)
-                const sv = `https://demo-chat-real.herokuapp.com/`
-                const local = `http://192.168.16.104:4001/`
-                postData(`${sv}signup`, { account, name, password })
+              
+                postData(`${SERVER}signup`, { account, name, password })
                     .then(data => {
                         setIsLoading(false)
                         if (data.status === 'fail') {
@@ -76,6 +77,7 @@ export default function SignUp({ navigation }) {
                 }}
 
             />
+            
             <TextInput
                 style={{ borderWidth: 1, padding: 10, borderColor: 'gray', borderRadius: 10, marginTop: 10, color: 'black', fontSize: 20, backgroundColor: 'white', width: '40%', textAlign: 'center' }}
                 placeholder="Enter Your Name"

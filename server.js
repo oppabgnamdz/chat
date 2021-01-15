@@ -18,7 +18,7 @@ let plusMess = 1;
 const users = {}
 
 //connect to DB
-mongoose.connect(`mongodb+srv://obnd217:@@123qwe@cluster0.9m2or.mongodb.net/testlocal?retryWrites=true&w=majority`, { useNewUrlParser: true }).then(() => console.log('connected')).catch(err => console.log(err))
+mongoose.connect(`mongodb+srv://obnd217:@@123qwe@cluster0.9m2or.mongodb.net/ahihi?retryWrites=true&w=majority`, { useNewUrlParser: true }).then(() => console.log('connected')).catch(err => console.log(err))
 
 //middware
 app.use(cors())
@@ -110,12 +110,12 @@ app.put('/update', (req, res) => {
     const { account, name, password, avatar } = req.body
     console.log({ account, name, password, avatar });
     if (password) {
-        updateUser(account, { name, password })
+        updateUser(account, { name, password, avatar })
             .then(result => {
                 result ? res.send(result) : res.send({ status: 'fail' })
             })
     } else {
-        updateUser(account, { name })
+        updateUser(account, { name, avatar })
             .then(result => {
                 result ? res.send(result) : res.send({ status: 'fail' })
             })

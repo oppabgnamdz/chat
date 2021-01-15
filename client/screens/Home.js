@@ -3,26 +3,24 @@ import { StyleSheet, View, KeyboardAvoidingView, Image } from 'react-native';
 import io from 'socket.io-client'
 import { GiftedChat, Send } from 'react-native-gifted-chat'
 import Spinner from 'react-native-loading-spinner-overlay';
+import SERVER from '../utils/Server';
 
 export default function Home({ navigation, route }) {
     const { name, room, account, avatar, time } = route.params;
     const [receiveMessage, setReceiveMessage] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const socket = useRef(null);
-    const sv = `https://demo-chat-real.herokuapp.com/`
-    const local = `http://192.168.16.104:4001/`
+
     useEffect(() => {
         navigation.setOptions({ title: "Room: " + room })
-        fetch(`${sv}${room}`)
+        fetch(`${SERVER}${room}`)
             .then(res => res.json())
             .then(res => {
-                socket.current = io(`${sv}`);
+                socket.current = io(`${SERVER}`);
                 socket.current.emit("join", { name, room, account, avatar, time })
-
                 socket.current.on("message", message => {
                     setReceiveMessage(pre => GiftedChat.append(pre, message))
                 })
-
                 setReceiveMessage(pre => GiftedChat.append(pre, res))
                 setIsLoading(false)
 

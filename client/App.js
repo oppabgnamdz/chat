@@ -8,10 +8,9 @@ import SignUp from './screens/SignUp';
 import SignIn from './screens/SignIn';
 import Person from './screens/Person';
 import { Ionicons } from '@expo/vector-icons';
-// Ignore log notification by message
+
 LogBox.ignoreLogs(['Warning: ...']);
 
-//Ignore all log notifications
 LogBox.ignoreAllLogs();
 const Stack = createStackNavigator();
 const MyStack = () => {
@@ -19,13 +18,14 @@ const MyStack = () => {
     <Stack.Navigator>
       <Stack.Screen name="SignIn" component={SignIn} options={{
         title: 'Welcome', headerStyle: {
-          backgroundColor: '#f4511e',
+          backgroundColor: '#418a8e',
         },
         headerTintColor: '#fff',
         headerTitleAlign: 'center',
         headerTitleStyle: {
           fontWeight: 'bold',
         },
+        headerShown: false
       }} />
       <Stack.Screen name="SignUp" component={SignUp} options={{
         title: 'Sign Up', headerStyle: {
@@ -36,6 +36,7 @@ const MyStack = () => {
         headerTitleStyle: {
           fontWeight: 'bold',
         },
+        headerShown: false
       }} />
 
       <Stack.Screen name="JoinScreen" component={JoinScreen} options={({ navigation, route }) => (

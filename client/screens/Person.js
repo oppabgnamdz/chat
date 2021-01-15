@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { View, Text, TextInput, TouchableOpacity, Alert, Image } from 'react-native'
 import Spinner from 'react-native-loading-spinner-overlay';
+import SERVER from '../utils/Server';
+
 export default function Person({ route, navigation }) {
     const { name, account, avatar, time, password } = route.params;
     const [editName, setEditName] = useState('');
@@ -26,8 +28,7 @@ export default function Person({ route, navigation }) {
         return response.json();
     }
     const edit = () => {
-        const sv = `https://demo-chat-real.herokuapp.com/`
-        const local = `http://192.168.16.104:4001/`
+      
         if (oldPassword !== password) {
             Alert.alert('Current password is incorrect')
             return
@@ -39,7 +40,7 @@ export default function Person({ route, navigation }) {
             console.log('new pass');
             if (editName) {
                 setIsLoading(true)
-                updateData(`${sv}update`, { account, name: editName, password: newPassword, avatar: newAvatar })
+                updateData(`${SERVER}update`, { account, name: editName, password: newPassword, avatar: newAvatar })
                     .then(data => {
                         setIsLoading(false)
                         if (data.status === 'fail') {
@@ -56,7 +57,7 @@ export default function Person({ route, navigation }) {
             console.log('no new pass');
             if (editName) {
                 setIsLoading(true)
-                updateData(`${sv}update`, { account, name: editName, avatar: newAvatar })
+                updateData(`${SERVER}update`, { account, name: editName, avatar: newAvatar })
                     .then(data => {
                         console.log('hey hey ne');
                         setIsLoading(false)
