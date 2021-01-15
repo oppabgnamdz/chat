@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, TextInput, TouchableOpacity, Image, ImageBackground, Alert } from 'react-native'
-import { Container, Form, Item, Input, Label } from 'native-base';
 
 export default function JoinScreen({ navigation, route }) {
     const { account, name, avatar, time, password } = route.params
@@ -9,7 +8,7 @@ export default function JoinScreen({ navigation, route }) {
         navigation.setOptions({ title: "Hello " + name })
     }, [])
     return (
-        <Container style={{ backgroundColor: '#f000', flex: 1 }}>
+        <View style={{ backgroundColor: '#f000', flex: 1 }}>
             <ImageBackground
                 source={require('../assets/background.jpg')}
                 style={{
@@ -46,6 +45,6 @@ export default function JoinScreen({ navigation, route }) {
                     <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Join!</Text>
                 </TouchableOpacity>
             </ImageBackground>
-        </Container >
+        </View >
     )
 }
