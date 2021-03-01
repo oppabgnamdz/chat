@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, TextInput, TouchableOpacity, Image, ImageBackground, Alert } from 'react-native'
-
+import BlankValidate from '../utils/BlankValidate'
 export default function JoinScreen({ navigation, route }) {
     const { account, name, avatar, time, password } = route.params
     const [room, setRoom] = useState('');
@@ -39,7 +39,7 @@ export default function JoinScreen({ navigation, route }) {
                 <TouchableOpacity
                     style={{ backgroundColor: 'cyan', textAlign: 'center', borderRadius: 10, marginTop: 20, padding: 15, width: '60%', alignItems: 'center' }}
                     onPress={() => {
-                        room ? navigation.navigate('Home', { name, room, account, avatar, time }) : Alert.alert('Field is not empty')
+                        !BlankValidate(room) ? navigation.navigate('Home', { name, room, account, avatar, time }) : Alert.alert('Field is not empty')
                     }}
                 >
                     <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Join!</Text>
