@@ -58,7 +58,7 @@ export default function SignIn({ navigation }) {
                 Alert.alert('Field is not empty')
             }
         } else {
-            alert('Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character')
+            alert('Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character')
         }
 
     }

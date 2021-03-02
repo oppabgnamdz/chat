@@ -3,6 +3,8 @@ import { View, Text, TextInput, TouchableOpacity, Alert, Image, StyleSheet, Imag
 import Spinner from 'react-native-loading-spinner-overlay';
 import SERVER from '../utils/Server';
 import Modal from 'react-native-modal';
+import PasswordValidate from '../utils/PasswordValidate'
+
 
 export default function Person({ route, navigation }) {
     const { name, account, avatar, time, password } = route.params;
@@ -45,18 +47,23 @@ export default function Person({ route, navigation }) {
             Alert.alert('Password is not match')
             return
         }
-        if (newPassword === confirmNewPassword) {
-            setIsLoading(true)
-            updateData(`${SERVER}update`, { account, name: editName, password: newPassword, avatar: newAvatar })
-                .then(data => {
-                    setIsLoading(false)
-                    if (data.status === 'fail') {
-                        Alert.alert('This account is Invalid')
-                    } else {
-                        navigation.navigate('SignIn')
-                    }
-                });
+        if (PasswordValidate(newPassword) && PasswordValidate(confirmNewPassword)) {
+            if (newPassword === confirmNewPassword) {
+                setIsLoading(true)
+                updateData(`${SERVER}update`, { account, name: editName, password: newPassword, avatar: newAvatar })
+                    .then(data => {
+                        setIsLoading(false)
+                        if (data.status === 'fail') {
+                            Alert.alert('This account is Invalid')
+                        } else {
+                            navigation.navigate('SignIn')
+                        }
+                    });
+            }
+        } else {
+            alert('Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character')
         }
+
     }
     const changeImage = () => {
         let randomAvatar = Math.floor(Math.random() * 1000);
