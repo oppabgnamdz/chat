@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import { View, Text, TouchableOpacity, Alert, ImageBackground, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, Text, TouchableOpacity, Alert, ImageBackground, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, SafeAreaView } from 'react-native'
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Container, Form, Item, Input, Label } from 'native-base';
 import SERVER from '../utils/Server';
 import BlankValidate from '../utils/BlankValidate'
+import PasswordValidate from '../utils/PasswordValidate'
+import EmailValidate from '../utils/EmailValidate'
 import image from "../assets/backgroundtest.jpg";
 import { AntDesign } from '@expo/vector-icons';
 
@@ -37,26 +39,36 @@ export default function SignUp({ navigation }) {
             Alert.alert('Account is must not white space')
             return;
         }
-        if (password === confirmPassword) {
-            if (account && password && name) {
-                setIsLoading(true)
+        if(!EmailValidate(account)){
+            alert('Incorrect email format')
+            return
+        }
+        if (PasswordValidate(password) && PasswordValidate(confirmPassword)) {
 
-                postData(`${SERVER}signup`, { account, name, password })
-                    .then(data => {
-                        setIsLoading(false)
-                        if (data.status === 'fail') {
-                            Alert.alert('Account is used . Please create another !')
-                        } else {
-                            Alert.alert('Create account is successfully !')
-                            navigation.navigate('SignIn')
-                        }
-                    });
+            if (password === confirmPassword) {
+                if (account && password && name) {
+                    setIsLoading(true)
+
+                    postData(`${SERVER}signup`, { account, name, password })
+                        .then(data => {
+                            setIsLoading(false)
+                            if (data.status === 'fail') {
+                                Alert.alert('Account is used . Please create another !')
+                            } else {
+                                Alert.alert('Create account is successfully !')
+                                navigation.navigate('SignIn')
+                            }
+                        });
+                } else {
+                    Alert.alert('Field is not empty')
+                }
             } else {
-                Alert.alert('Field is not empty')
+                Alert.alert('Password is not match')
             }
         } else {
-            Alert.alert('Password is not match')
+            alert(`Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character`)
         }
+
     }
 
     return (
@@ -96,7 +108,7 @@ export default function SignUp({ navigation }) {
                                 <Label style={{ ...styles.label, fontSize: 30 }}>Sign up</Label>
                             </View>
                             <Item floatingLabel>
-                                <Label style={styles.label}>Username</Label>
+                                <Label style={styles.label}>E-mail</Label>
                                 <Input onChangeText={(e) => {
                                     setAccount(e)
                                 }} style={{ marginTop: 10, color: 'cyan' }} />

@@ -6,9 +6,10 @@ import { AntDesign } from '@expo/vector-icons';
 import image from "../assets/backgroundtest.jpg";
 import SERVER from '../utils/Server';
 import BlankValidate from '../utils/BlankValidate'
+import PasswordValidate from '../utils/PasswordValidate'
+import EmailValidate from '../utils/EmailValidate'
 export default function SignIn({ navigation }) {
     const heightDevice = Dimensions.get('window').height
-    console.log(heightDevice);
     const [account, setAccount] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -34,23 +35,32 @@ export default function SignIn({ navigation }) {
             Alert.alert('Account is must not white space')
             return;
         }
-        if (account && password) {
-            setIsLoading(true)
-
-            postData(`${SERVER}signin`, { account, password })
-                .then(data => {
-                    setIsLoading(false)
-                    if (data.status === 'fail') {
-                        Alert.alert('This account is Invalid')
-                        return
-                    }
-                    else {
-                        navigation.navigate('JoinScreen', data[0])
-                    }
-                });
-        } else {
-            Alert.alert('Field is not empty')
+        if (!EmailValidate(account)) {
+            alert('Incorrect email format')
+            return
         }
+        if (PasswordValidate(password)) {
+            if (account && password) {
+                setIsLoading(true)
+
+                postData(`${SERVER}signin`, { account, password })
+                    .then(data => {
+                        setIsLoading(false)
+                        if (data.status === 'fail') {
+                            Alert.alert('This account is Invalid')
+                            return
+                        }
+                        else {
+                            navigation.navigate('JoinScreen', data[0])
+                        }
+                    });
+            } else {
+                Alert.alert('Field is not empty')
+            }
+        } else {
+            alert('Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character')
+        }
+
     }
     return (
         <TouchableWithoutFeedback
@@ -78,7 +88,7 @@ export default function SignIn({ navigation }) {
                         <Form style={heightDevice < 700 ? styles.form2 : styles.form}>
                             <Label style={{ ...styles.label, fontSize: 30 }}>Login</Label>
                             <Item floatingLabel>
-                                <Label style={styles.label}>Username</Label>
+                                <Label style={styles.label}>E-mail</Label>
                                 <Input onChangeText={(e) => { setAccount(e) }} style={{ marginTop: 10, color: 'cyan' }} />
                             </Item>
                             <Item floatingLabel >

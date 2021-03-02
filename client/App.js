@@ -9,6 +9,7 @@ import SignIn from './screens/SignIn';
 import Person from './screens/Person';
 import { Ionicons } from '@expo/vector-icons';
 
+
 LogBox.ignoreLogs(['Warning: ...']);
 
 LogBox.ignoreAllLogs();
