@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
-import { View, Text, TouchableOpacity, Alert, StyleSheet, ImageBackground } from 'react-native'
+import { View, Text, TouchableOpacity, Alert, StyleSheet, ImageBackground, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Dimensions } from 'react-native'
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Container, Form, Item, Input, Label } from 'native-base';
 import { AntDesign } from '@expo/vector-icons';
-import image from '../assets/backgroundtest.jpg';
+import image from "../assets/backgroundtest.jpg";
 import SERVER from '../utils/Server';
 import BlankValidate from '../utils/BlankValidate'
 export default function SignIn({ navigation }) {
-
+    const heightDevice = Dimensions.get('window').height
+    console.log(heightDevice);
     const [account, setAccount] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -52,41 +53,56 @@ export default function SignIn({ navigation }) {
         }
     }
     return (
-        <Container>
-            <ImageBackground
-                source={image}
-                style={styles.container}
-            >
-                <Spinner
-                    visible={isLoading}
-                    textContent={'Loading...'}
-                    textStyle={{ color: '#FFF' }}
-                />
+        <TouchableWithoutFeedback
+            onPress={() => {
+                Keyboard.dismiss()
+            }}
+        >
+            <Container>
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    style={styles.container}
 
-                <Form style={styles.form}>
-                    <Label style={{ ...styles.label, fontSize: 30 }}>Login</Label>
-                    <Item floatingLabel>
-                        <Label style={styles.label}>Username</Label>
-                        <Input onChangeText={(e) => { setAccount(e) }} style={{ marginTop: 10, color: 'cyan' }} />
-                    </Item>
-                    <Item floatingLabel >
-                        <Label style={styles.label}>Password</Label>
-                        <Input onChangeText={(e) => { setPassword(e) }} secureTextEntry={true} style={{ marginTop: 10, color: 'cyan' }} />
-                    </Item>
+                >
+                    <ImageBackground
+                        source={image}
+                        style={styles.container}
+                    >
 
-                    <TouchableOpacity
-                        onPress={() => { navigation.navigate('SignUp') }}
-                        style={styles.signup} >
-                        <Text style={{ color: 'red', marginRight: 15 }}>Sign up </Text>
-                    </TouchableOpacity>
-                </Form>
-                <View style={styles.buttonRight}>
-                    <TouchableOpacity onPress={signIn} style={styles.button} >
-                        <AntDesign name="arrowright" size={24} color="black" />
-                    </TouchableOpacity>
-                </View>
-            </ImageBackground>
-        </Container >
+                        <Spinner
+                            visible={isLoading}
+                            textContent={'Loading...'}
+                            textStyle={{ color: '#FFF' }}
+                        />
+
+                        <Form style={heightDevice < 700 ? styles.form2 : styles.form}>
+                            <Label style={{ ...styles.label, fontSize: 30 }}>Login</Label>
+                            <Item floatingLabel>
+                                <Label style={styles.label}>Username</Label>
+                                <Input onChangeText={(e) => { setAccount(e) }} style={{ marginTop: 10, color: 'cyan' }} />
+                            </Item>
+                            <Item floatingLabel >
+                                <Label style={styles.label}>Password</Label>
+                                <Input onChangeText={(e) => { setPassword(e) }} secureTextEntry={true} style={{ marginTop: 10, color: 'cyan' }} />
+                            </Item>
+
+                            <TouchableOpacity
+                                onPress={() => { navigation.navigate('SignUp') }}
+                                style={styles.signup} >
+                                <Text style={{ color: 'red', marginRight: 15 }}>Sign up </Text>
+                            </TouchableOpacity>
+                        </Form>
+                        <View style={styles.buttonRight}>
+                            <TouchableOpacity onPress={signIn} style={styles.button} >
+                                <AntDesign name="arrowright" size={24} color="black" />
+                            </TouchableOpacity>
+                        </View>
+
+                    </ImageBackground>
+                </KeyboardAvoidingView>
+            </Container >
+        </TouchableWithoutFeedback>
+
     )
 }
 
@@ -101,6 +117,10 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 30,
         marginTop: 70
+    },
+    form2: {
+        marginLeft: 20,
+        marginRight: 30,
     },
     label: {
         color: 'white'
