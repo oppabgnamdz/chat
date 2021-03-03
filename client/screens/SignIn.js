@@ -47,7 +47,9 @@ export default function SignIn({ navigation }) {
                     .then(data => {
                         setIsLoading(false)
                         if (data.status === 'fail') {
-                            Alert.alert('This account is Invalid')
+                            console.log('login fail');
+                            alert('This account is Invalid')
+
                             return
                         }
                         else {
